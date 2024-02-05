@@ -1,0 +1,24 @@
+{
+  "name": "Test",
+  "style": "Tenant",
+  "Fields": [
+    {
+      "name": "CAPolicies",
+      "UseExistingInfo": false,
+      "FrontendFields": [
+        {
+          "name": "Conditional Access Policies",
+          "value": "CAPolicies",
+          "formatter": "table"
+        }
+      ],
+      "desc": "",
+      "StoreAs": "JSON",
+      "API": "Graph",
+      "ExtractFields": [
+        "createdDateTime"
+      ],
+      "URL": "https://graph.microsoft.com/beta/identity/conditionalAccess/policies"
+    }
+  ]
+}
