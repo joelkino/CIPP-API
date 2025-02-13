@@ -6,18 +6,29 @@ name: Build and deploy Powershell project to Azure Function App - cippla7wy
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: windows-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C28638F24EFE4CE695C77D1B8DAA5C8E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_57E804BF2FB04F8CB6137ABE86C269F5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CE8478B54929401BA1BAD78221F41433 }}
 
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
@@ -26,4 +37,4 @@ jobs:
           app-name: 'cippla7wy'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6F9FE55EC02F45E6B89732E9EC883F7B }}
+          
